@@ -42,9 +42,35 @@ function stockLookup(itemID, stockNum) {
   var query = "SELECT stock_quantity FROM products WHERE item_id = " + itemID;
   connection.query(query, function(err, res) {
     if (stockNum > res[0].stock_quantity) {
-      console.log("You asked for too many!");
+      console.log("Insufficient quantity!");
+      connection.end();
     } else {
-      console.log("OK!");
+      stockUpdate(itemID, stockNum);
     }
   });
 }
+
+function stockUpdate(itemID, orderNum) {
+  var query = "UPDATE products SET stock_quantity = stock_quantity - " + orderNum
+  + " WHERE item_id = " + itemID;
+  connection.query(query, function(err, res) {
+    console.log("Thank you. Your order has been placed.");
+  });
+  getPrice(itemID, orderNum);
+}
+
+function getPrice(itemID, orderNum) {
+  var query = "SELECT price FROM products where item_id = " + itemID;
+  connection.query(query, function(err, res) {
+    var totalCost = res[0].price * orderNum;
+    console.log("Your total cost is: $" + totalCost.toFixed(2));
+  });
+  connection.end();
+}
+
+
+
+
+
+
+
