@@ -55,3 +55,13 @@ function viewProducts() {
 	});
 	connection.end();
 }
+
+function lowInventory() {
+	var query = "SELECT item_id, product_name, stock_quantity FROM products WHERE stock_quantity < 5";
+	connection.query(query, function(err, res) {
+		for (var i = 0; i < res.length; i++) {
+			console.log("Item ID: " + res[i].item_id + " || Name: " + res[i].product_name + " || Quantity: " + res[i].stock_quantity);
+		}
+	});
+	connection.end();
+}
