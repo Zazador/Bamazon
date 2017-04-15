@@ -65,3 +65,38 @@ function lowInventory() {
 	});
 	connection.end();
 }
+
+function addInventory() {
+	var itemID, newStock;
+	inquirer.prompt({
+		name: "itemID",
+		type: "input",
+		message: "What is the product ID?"
+	}).then(function(answer) {
+		itemID = answer.itemID;
+		inquirer.prompt({
+			name: "orderNum",
+			type: "input",
+			message: "How many units would you like to add?"
+		}).then(function(answer) {
+			newStock = answer.orderNum;
+			var query = "UPDATE products SET stock_quantity = stock_quantity + " + newStock
+			+ " WHERE item_id = " + itemID;
+			connection.query(query, function(err, res) {
+				console.log("Thank you. " + newStock + " units have been added to product ID " + itemID);
+			});
+			connection.end();
+		});
+	});
+}
+
+
+
+
+
+
+
+
+
+
+
