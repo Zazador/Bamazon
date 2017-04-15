@@ -90,6 +90,51 @@ function addInventory() {
 	});
 }
 
+function addProduct() {
+	var itemID, name, department, price, stock;
+	inquirer.prompt({
+		name: "itemID",
+		type: "input",
+		message: "What is the product ID?"
+	}).then(function(answer) {
+		itemID = answer.itemID;
+		inquirer.prompt({
+			name: "name",
+			type: "input",
+			message: "What is the name of the product?"
+		}).then(function(answer) {
+			name = answer.name;
+			inquirer.prompt({
+				name: "department",
+				type: "input",
+				message: "What is the name of the department?"
+			}).then(function(answer) {
+				department = answer.department;
+				inquirer.prompt({
+					name: "price",
+					type: "input",
+					message: "What is the price of the product?"
+				}).then(function(answer) {
+					price = answer.price;
+					inquirer.prompt({
+						name: "stock",
+						type: "input",
+						message: "How many units would you like to add?"
+					}).then(function(answer) {
+						stock = answer.stock;
+						var query = "INSERT INTO products (item_id, product_name, department_name, price, stock_quantity)" +
+						" VALUES (?, ?, ?, ?, ?)";
+						connection.query(query, [itemID, name, department, price, stock], function(err, res) {
+							console.log("The new product has been added!");
+						});
+						connection.end();
+					});
+				});
+			});
+		});
+	});
+}
+
 
 
 
